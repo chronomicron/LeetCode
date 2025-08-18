@@ -31,6 +31,11 @@ using std::endl;
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
+
+        /************************/
+        /* BEGIN YOUR CODE HERE */
+        /************************/
+
         // Hashmap to store number-to-index mappings
         unordered_map<int, int> numMap;
         int complement;
@@ -52,6 +57,11 @@ public:
 
         // Return empty vector (though problem guarantees a solution)
         return {};
+
+        /**********************/
+        /* END YOUR CODE HERE */
+        /**********************/
+
     }
 };
 

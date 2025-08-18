@@ -1,4 +1,9 @@
-# Ignore executables
-*.out
-*.exe
-a.out
+# .gitignore for LeetCode workspace
+# Ignore all executables in subfolders (if you name them differently)
+Easy_Quest/*
+Med_Quest/*
+Hard_Quest/*
+
+# reinstate source files
+!*.cpp  # Keep source files
+!*.h    # Keep header files

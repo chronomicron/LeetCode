@@ -1,12 +1,23 @@
 # .gitignore for LeetCode workspace
+
+# ignore temp build files
+.vscode/tasks.json
+
 # Ignore all executables in subfolders (if you name them differently)
-Easy_Quest/*
-Med_Quest/*
-Hard_Quest/*
+#Easy_Quest/*
+#Med_Quest/*
+#Hard_Quest/*
 
 # reinstate source files
-!*.c  # Keep source files
-!*.cpp  # Keep source files
-!*.h    # Keep header files
+!Easy_Quest/*.c  # Keep source files
+!Easy_Quest/*.cpp  # Keep source files
+!Easy_Quest/*.h    # Keep header files
 
-.vscode/tasks.json
+!Med_Quest/*.c  # Keep source files
+!Med_Quest/*.cpp  # Keep source files
+!Med_Quest/*.h    # Keep header files
+
+!Hard_Quest/*.c  # Keep source files
+!Hard_Quest/*.cpp  # Keep source files
+!Hard_Quest/*.h    # Keep header files
+

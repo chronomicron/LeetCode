@@ -4,9 +4,9 @@
 .vscode/tasks.json
 
 # Ignore all executables in subfolders (if you name them differently)
-#Easy_Quest/*
-#Med_Quest/*
-#Hard_Quest/*
+Easy_Quest/*.exe
+Med_Quest/*.exe
+Hard_Quest/*.exe
 
 # reinstate source files
 !Easy_Quest/*.c  # Keep source files

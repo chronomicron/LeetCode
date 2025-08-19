@@ -8,4 +8,5 @@ Hard_Quest/*
 !*.c  # Keep source files
 !*.cpp  # Keep source files
 !*.h    # Keep header files
+
 .vscode/tasks.json

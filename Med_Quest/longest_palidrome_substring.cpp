@@ -23,72 +23,74 @@ public:
         /* BEGIN YOUR CODE HERE */
         /************************/
 
+        // Get string length
         int string_length = s.length();
         if (string_length == 0) {
             return "";
         }
 
-        // Variables to track the longest palindrome found
-        int longest_palindrome_start = 0;
-        int longest_palindrome_length = 1; // At least one character is a palindrome
+        // Variables to track the longest palindrome
+        int max_palindrome_start = 0;
+        int max_palindrome_length = 1; // Single character is a palindrome
 
-        // Iterate through each character as a potential center
-        for (int center_index = 0; center_index < string_length; center_index++) {
-            // Check odd-length palindrome (center at current character)
-            int left_pointer = center_index;
-            int right_pointer = center_index;
-            int current_length = 1; // Single character is a palindrome
+        // Iterate through each position as a potential center
+        for (int index = 0; index < string_length; index++) {
+            // Check odd-length palindrome (center at index)
+            int left_pointer = index;
+            int right_pointer = index;
+            int current_palindrome_length = 1;
 
             // Expand around center while within bounds and characters match
             while (left_pointer - 1 >= 0 && right_pointer + 1 < string_length &&
                    s[left_pointer - 1] == s[right_pointer + 1]) {
                 left_pointer--;
                 right_pointer++;
-                current_length += 2;
+                current_palindrome_length += 2;
                 // Debug print (commented out)
-                // cout << "Odd: center=" << center_index << ", left=" << left_pointer
-                //      << ", right=" << right_pointer << ", len=" << current_length << endl;
+                // cout << "Odd: index=" << index << ", left=" << left_pointer
+                //      << ", right=" << right_pointer << ", len=" << current_palindrome_length << endl;
             }
 
-            // Update longest palindrome if current one is longer
-            if (current_length > longest_palindrome_length) {
-                longest_palindrome_start = left_pointer;
-                longest_palindrome_length = current_length;
+            // Update longest palindrome if current is longer
+            if (current_palindrome_length > max_palindrome_length) {
+                max_palindrome_start = left_pointer;
+                max_palindrome_length = current_palindrome_length;
             }
 
-            // Check even-length palindrome (center between current and next character)
-            if (center_index + 1 < string_length && s[center_index] == s[center_index + 1]) {
-                left_pointer = center_index;
-                right_pointer = center_index + 1;
-                current_length = 2; // Two adjacent characters
+            // Check even-length palindrome (center between index and index+1)
+            if (index + 1 < string_length) {
+                left_pointer = index;
+                right_pointer = index + 1;
+                current_palindrome_length = (s[left_pointer] == s[right_pointer]) ? 2 : 0;
 
-                // Expand while within bounds and characters match
-                while (left_pointer - 1 >= 0 && right_pointer + 1 < string_length &&
-                       s[left_pointer - 1] == s[right_pointer + 1]) {
-                    left_pointer--;
-                    right_pointer++;
-                    current_length += 2;
-                    // Debug print (commented out)
-                    // cout << "Even: center=" << center_index << ", left=" << left_pointer
-                    //      << ", right=" << right_pointer << ", len=" << current_length << endl;
-                }
+                // Expand only if initial characters match
+                if (current_palindrome_length == 2) {
+                    while (left_pointer - 1 >= 0 && right_pointer + 1 < string_length &&
+                           s[left_pointer - 1] == s[right_pointer + 1]) {
+                        left_pointer--;
+                        right_pointer++;
+                        current_palindrome_length += 2;
+                        // Debug print (commented out)
+                        // cout << "Even: index=" << index << ", left=" << left_pointer
+                        //      << ", right=" << right_pointer << ", len=" << current_palindrome_length << endl;
+                    }
 
-                // Update longest palindrome if current one is longer
-                if (current_length > longest_palindrome_length) {
-                    longest_palindrome_start = left_pointer;
-                    longest_palindrome_length = current_length;
+                    // Update longest palindrome if current is longer
+                    if (current_palindrome_length > max_palindrome_length) {
+                        max_palindrome_start = left_pointer;
+                        max_palindrome_length = current_palindrome_length;
+                    }
                 }
             }
         }
 
-        // Extract the substring using start index and length
-        string longest_palindrome_substring = s.substr(longest_palindrome_start, longest_palindrome_length);
-        return longest_palindrome_substring;
+        // Extract the longest palindrome substring
+        string longest_palindrome_result = s.substr(max_palindrome_start, max_palindrome_length);
+        return longest_palindrome_result;
 
         /**********************/
         /* END YOUR CODE HERE */
         /**********************/
-
     }
 };
 

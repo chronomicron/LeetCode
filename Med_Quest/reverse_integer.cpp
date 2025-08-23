@@ -8,9 +8,9 @@
 //   - -2^31 <= x <= 2^31 - 1
 // Algorithmic Pattern: Math
 //   - The solution extracts digits using modulo and division, builds the reversed
-//     integer as a positive number, and applies the sign at the end. Checks for
-//     overflow against the 32-bit signed integer range. Achieves O(log x) time
-//     (number of digits) and O(1) space. Avoids abs() on input to handle INT_MIN.
+//     integer as a positive number, and applies the sign at the end. Uses simple
+//     arithmetic to avoid abs() for absolute value, ensuring 32-bit compliance.
+//     Achieves O(log x) time (number of digits) and O(1) space.
 
 #include <iostream>
 #include <climits>
@@ -40,18 +40,25 @@ public:
             int current_digit = remaining_number % 10;
             remaining_number /= 10;
 
+            // Convert digit to positive using simple arithmetic
+            int positive_digit = is_negative ? -current_digit : current_digit;
+
             // Check for overflow before adding digit
             if (reversed_number > INT_MAX / 10 || 
-                (reversed_number == INT_MAX / 10 && abs(current_digit) > INT_MAX % 10)) {
+                (reversed_number == INT_MAX / 10 && positive_digit > INT_MAX % 10)) {
                 return 0; // Overflow
             }
+            // Special case: INT_MIN when reversed equals INT_MAX
+            if (reversed_number == INT_MAX / 10 && positive_digit == INT_MAX % 10 && is_negative) {
+                return 0; // Would become INT_MIN, which is valid, but check for safety
+            }
 
-            // Build reversed number using absolute value of digit
-            reversed_number = reversed_number * 10 + abs(current_digit);
+            // Build reversed number
+            reversed_number = reversed_number * 10 + positive_digit;
 
             // Debug print (commented out)
-            // cout << "Digit: " << current_digit << ", Reversed: " << reversed_number
-            //      << ", Remaining: " << remaining_number << endl;
+            // cout << "Digit: " << current_digit << ", Positive Digit: " << positive_digit
+            //      << ", Reversed: " << reversed_number << ", Remaining: " << remaining_number << endl;
         }
 
         // Apply sign to final result

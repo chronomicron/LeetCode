@@ -12,8 +12,14 @@
 //     range. Achieves O(log x) time (number of digits) and O(1) space.
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
+
+using std::string;
+using std::to_string;
+using std::reverse;
+using std::stoi;
 
 class Solution {
 public:
@@ -21,6 +27,37 @@ public:
         /************************/
         /* BEGIN YOUR CODE HERE */
         /************************/
+
+        int reverse_x;
+        int positive = 0;
+
+//        int positive = x >= 0 ? 1 : -1;
+        
+        if (x >= 0){
+            positive = 1;
+        }
+        else{
+            positive = -1;
+        }
+
+        std::string str = std::to_string(x);
+        std::reverse(str.begin(), str.end());
+
+        try 
+        {
+            reverse_x = std::stoi(str);
+        } catch (const std::out_of_range& e) 
+        {
+            std::cerr << "Error: " << e.what() << " - The number is too large for int." << std::endl;
+            return 0;
+        }
+
+        if(positive == 1){
+            return reverse_x;
+        }
+        else {
+            return -reverse_x;
+        }
 
         /**********************/
         /* END YOUR CODE HERE */

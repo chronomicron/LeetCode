@@ -7,19 +7,14 @@
 // Constraints:
 //   - -2^31 <= x <= 2^31 - 1
 // Algorithmic Pattern: Math
-//   - The solution typically extracts digits using modulo and division, builds the
-//     reversed integer, and checks for overflow against the 32-bit signed integer
-//     range. Achieves O(log x) time (number of digits) and O(1) space.
+//   - The solution extracts digits using modulo and division, builds the reversed
+//     integer, and checks for overflow against the 32-bit signed integer range.
+//     Achieves O(log x) time (number of digits) and O(1) space.
 
 #include <iostream>
-#include <algorithm>
+#include <climits>
 
 using namespace std;
-
-using std::string;
-using std::to_string;
-using std::reverse;
-using std::stoi;
 
 class Solution {
 public:
@@ -28,36 +23,38 @@ public:
         /* BEGIN YOUR CODE HERE */
         /************************/
 
-        int reverse_x;
-        int positive = 0;
-
-//        int positive = x >= 0 ? 1 : -1;
-        
-        if (x >= 0){
-            positive = 1;
-        }
-        else{
-            positive = -1;
-        }
-
-        std::string str = std::to_string(x);
-        std::reverse(str.begin(), str.end());
-
-        try 
-        {
-            reverse_x = std::stoi(str);
-        } catch (const std::out_of_range& e) 
-        {
-            std::cerr << "Error: " << e.what() << " - The number is too large for int." << std::endl;
+        // Handle special case: x = 0
+        if (x == 0) {
             return 0;
         }
 
-        if(positive == 1){
-            return reverse_x;
+        // Determine sign and work with absolute value
+        bool is_negative = x < 0;
+        int remaining_number = abs(x); // Avoid INT_MIN overflow
+
+        // Build reversed number
+        int reversed_number = 0;
+        while (remaining_number > 0) {
+            // Extract the last digit
+            int current_digit = remaining_number % 10;
+            remaining_number /= 10;
+
+            // Check for overflow before adding digit
+            if (reversed_number > INT_MAX / 10 || 
+                (reversed_number == INT_MAX / 10 && current_digit > INT_MAX % 10)) {
+                return 0; // Overflow
+            }
+
+            // Build reversed number
+            reversed_number = reversed_number * 10 + current_digit;
+
+            // Debug print (commented out)
+            // cout << "Digit: " << current_digit << ", Reversed: " << reversed_number
+            //      << ", Remaining: " << remaining_number << endl;
         }
-        else {
-            return -reverse_x;
-        }
+
+        // Apply sign
+        return is_negative ? -reversed_number : reversed_number;
 
         /**********************/
         /* END YOUR CODE HERE */

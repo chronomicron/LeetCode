@@ -47,6 +47,46 @@ public:
         /************************/
         /* BEGIN YOUR CODE HERE */
         /************************/
+        int string_length = s.length();
+        if (numRows == 1 || numRows >= string_length) {
+            return s; // No zigzag needed
+        }
+
+        // Initialize rows as vector of strings
+        vector<string> zigzag_rows(numRows);
+        int current_row = 0;
+        bool going_down = true; // Direction flag
+
+        // Traverse the string and append to rows
+        for (int i = 0; i < string_length; i++) {
+            char current_char = s[i];
+            zigzag_rows[current_row] += current_char;
+
+            // Update row and direction
+            if (going_down) 
+            {
+                current_row++;
+                if (current_row == numRows - 1) 
+                {
+                    going_down = false;
+                }
+            } else 
+            {
+                current_row--;
+                if (current_row == 0) 
+                {
+                    going_down = true;
+                }
+            }
+        }
+
+        // Concatenate all rows into result
+        string result_string;
+        for (int row = 0; row < numRows; row++) {
+            result_string += zigzag_rows[row];
+        }
+
+        return result_string;
 
         /**********************/
         /* END YOUR CODE HERE */

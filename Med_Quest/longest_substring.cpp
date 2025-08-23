@@ -34,7 +34,7 @@ using std::max;
 
 class Solution {
 public:
-    int lengthOfLongestSubstring(string input_string) {
+    int lengthOfLongestSubstring(string s) {
 
         /************************/
         /* BEGIN YOUR CODE HERE */
@@ -48,14 +48,14 @@ public:
         int max_substring_length = 0;
 
         // Handle empty string case
-        if (input_string.empty()) {
+        if (s.empty()) {
             return 0;
         }
 
         // Iterate through the string with right pointer
-        for (int right_pointer = 0; right_pointer < input_string.length(); right_pointer++) {
+        for (int right_pointer = 0; right_pointer < s.length(); right_pointer++) {
             // Get the current character
-            char current_char = input_string[right_pointer];
+            char current_char = s[right_pointer];
 
             // Check if the character is already in the window
             bool is_char_in_map = character_index_map.count(current_char) > 0;

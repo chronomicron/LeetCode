@@ -8,8 +8,9 @@
 //   - -2^31 <= x <= 2^31 - 1
 // Algorithmic Pattern: Math
 //   - The solution extracts digits using modulo and division, builds the reversed
-//     integer, and checks for overflow against the 32-bit signed integer range.
-//     Achieves O(log x) time (number of digits) and O(1) space.
+//     integer as a positive number, and applies the sign at the end. Checks for
+//     overflow against the 32-bit signed integer range. Achieves O(log x) time
+//     (number of digits) and O(1) space. Avoids abs() on input to handle INT_MIN.
 
 #include <iostream>
 #include <climits>
@@ -28,32 +29,32 @@ public:
             return 0;
         }
 
-        // Determine sign and work with absolute value
+        // Track sign and initialize reversed number
         bool is_negative = x < 0;
-        int remaining_number = abs(x); // Avoid INT_MIN overflow
-
-        // Build reversed number
+        int remaining_number = x;
         int reversed_number = 0;
-        while (remaining_number > 0) {
+
+        // Process digits
+        while (remaining_number != 0) {
             // Extract the last digit
             int current_digit = remaining_number % 10;
             remaining_number /= 10;
 
             // Check for overflow before adding digit
             if (reversed_number > INT_MAX / 10 || 
-                (reversed_number == INT_MAX / 10 && current_digit > INT_MAX % 10)) {
+                (reversed_number == INT_MAX / 10 && abs(current_digit) > INT_MAX % 10)) {
                 return 0; // Overflow
             }
 
-            // Build reversed number
-            reversed_number = reversed_number * 10 + current_digit;
+            // Build reversed number using absolute value of digit
+            reversed_number = reversed_number * 10 + abs(current_digit);
 
             // Debug print (commented out)
             // cout << "Digit: " << current_digit << ", Reversed: " << reversed_number
             //      << ", Remaining: " << remaining_number << endl;
         }
 
-        // Apply sign
+        // Apply sign to final result
         return is_negative ? -reversed_number : reversed_number;
 
         /**********************/

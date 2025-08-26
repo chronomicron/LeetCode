@@ -19,14 +19,11 @@
 // 3. Input: nums = [3,3], target = 6
 //    Output: [0,1] (Explanation: nums[0] + nums[1] = 3 + 3 = 6)
 
-#include <vector>            // For std::vector
-#include <unordered_map>     // For std::unordered_map
-#include <iostream>          // For std::cout
+#include <iostream>
 
-using std::vector;
-using std::unordered_map;
-using std::cout;
-using std::endl;
+#include <vector>
+#include <unordered_map>
+using namespace std;
 
 class Solution {
 public:
@@ -36,31 +33,34 @@ public:
         /* BEGIN YOUR CODE HERE */
         /************************/
 
-        // Hashmap to store number-to-index mappings
-        unordered_map<int, int> numMap;
-        int complement;
+        vector<int> solution = {};
+        unordered_map<int, int> remainder_map;
+        int remainder = 0;
 
-        // Iterate through the array
-        for (int i = 0; i < nums.size(); i++) {
-            // Calculate the complement needed to reach target
-            complement = target - nums[i];
+        for (int i = 0; i < nums.size(); i++){
 
-            // Check if complement exists in hashmap
-            if (numMap.find(complement) != numMap.end()) {
-                // Return indices of complement and current number
-                return {numMap[complement], i};
+            // Calculate the remainder needed to reach target
+            remainder = target - nums[i];
+
+            // Check if remainder exists in hashmap
+            if(!remainder_map.count(remainder)){
+                // if remainder doesn't exist, add it, key is remainder, value is index
+                remainder_map[nums[i]] = i;
+            }
+            else{
+                // if the remainder does exist in hash map
+                // return the value at key 'remainder', and current index
+                solution = {remainder_map[remainder] , i};
             }
 
-            // Store current number and its index
-            numMap[nums[i]] = i;
         }
 
-        // Return empty vector (though problem guarantees a solution)
-        return {};
+        return solution;
 
         /**********************/
         /* END YOUR CODE HERE */
         /**********************/
+
 
     }
 };
@@ -101,6 +101,29 @@ int main() {
         if (i < nums3.size() - 1) cout << ",";
     }
     cout << "], target = " << target3 << ", Output: [" << result3[0] << "," << result3[1] << "]" << endl;
+
+    // Test case 4: nums = [25,52,24, 55, 5, 42], target = 47
+    vector<int> nums4 = {25,52,24, 55, 5, 42};
+    int target4 = 47;
+    vector<int> result4 = sol.twoSum(nums4, target4);
+    cout << "Input: nums = [";
+    for (size_t i = 0; i < nums4.size(); i++) {
+        cout << nums4[i];
+        if (i < nums4.size() - 1) cout << ",";
+    }
+    cout << "], target = " << target4 << ", Output: [" << result4[0] << "," << result4[1] << "]" << endl;
+
+    // Test case 5: nums = [3,3], target = 6
+    vector<int> nums5 = {55, 34, 65, 45, 732, 55, 666, 45, 6};
+    int target5 = 40;
+    vector<int> result5 = sol.twoSum(nums5, target5);
+    cout << "Input: nums = [";
+    for (size_t i = 0; i < nums5.size(); i++) {
+        cout << nums5[i];
+        if (i < nums5.size() - 1) cout << ",";
+    }
+    cout << "], target = " << target5 << ", Output: [" << result5[0] << "," << result5[1] << "]" << endl;
+
 
     return 0;
 }

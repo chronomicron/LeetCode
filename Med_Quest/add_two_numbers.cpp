@@ -45,22 +45,46 @@ public:
         // Initialize dummy node and current pointer
         ListNode* topList = new ListNode(0);
         ListNode* current = topList;
-        int carry = 0;
+        int carry = 0; // The sum carry from one digit to the next
+        int x = 0;     // l1->val
+        int y = 0;     // l2->val
+        int sum = 0;   // Holds the sum for this iteration
 
         // Process lists and carry
         while (l1 != nullptr || l2 != nullptr || carry != 0) {
             // Get values, use 0 if list is exhausted
-            int x = l1 ? l1->val : 0;
-            int y = l2 ? l2->val : 0;
+            if (l1 != nullptr) {
+                x = l1->val;
+            } else {
+                x = 0;
+            }
+
+            if (l2 != nullptr) {
+                y = l2->val;
+            } else {
+                y = 0;
+            }
+
             // Calculate sum and carry
-            int sum = x + y + carry;
+            sum = x + y + carry;
             carry = sum / 10;
+
             // Create new node with digit
             current->next = new ListNode(sum % 10);
             current = current->next;
+
             // Advance pointers if available
-            l1 = l1 ? l1->next : nullptr;
-            l2 = l2 ? l2->next : nullptr;
+            if (l1 != nullptr) {
+                l1 = l1->next;
+            }
+            if (l2 != nullptr) {
+                l2 = l2->next;
+            }
+
+            // Debug print
+            // cout << "Digit1: " << x << ", Digit2: " << y
+            //      << ", Sum: " << sum << ", Carry: " << carry
+            //      << ", Result Node: " << current->val << endl;
         }
 
         // Return result, skipping dummy node
@@ -146,6 +170,23 @@ int main() {
     // Test case 3: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
     nums1 = {9, 9, 9, 9, 9, 9, 9};
     nums2 = {9, 9, 9, 9};
+    l1 = buildList(nums1);
+    l2 = buildList(nums2);
+    result1 = sol.addTwoNumbers(l1, l2);
+    cout << "Input: l1 = ";
+    printList(l1);
+    cout << ", l2 = ";
+    printList(l2);
+    cout << ", Output: ";
+    printList(result1);
+    cout << endl;
+    freeList(l1);
+    freeList(l2);
+    freeList(result1);
+
+    // Test case 4: l1 = [3, 5, 4, 4, 7, 7, 9, 6, 1], l2 = [4, 3, 7, 9, 3, 7, 5, 2]
+    nums1 = {3, 5, 4, 4, 7, 7, 9, 6, 1};
+    nums2 = {4, 3, 7, 9, 3, 7, 5, 2};
     l1 = buildList(nums1);
     l2 = buildList(nums2);
     result1 = sol.addTwoNumbers(l1, l2);

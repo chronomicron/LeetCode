@@ -67,7 +67,7 @@ public:
 
             // Update max length
             int current_length = right_pointer - left_pointer + 1;
-            max價_length = max(max_length, current_length);
+            max_length = max(max_length, current_length);
 
             // Debug print
             // cout << "Right: " << right_pointer << ", Char: " << current_char

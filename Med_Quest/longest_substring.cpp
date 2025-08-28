@@ -40,50 +40,48 @@ public:
         /* BEGIN YOUR CODE HERE */
         /************************/
 
-        // Hashmap to store the last seen index of each character
+        // Initialize variables
+        int string_length = s.length();
+        int left_pointer = 0;
+        int max_length = 0;
         unordered_map<char, int> character_index_map;
 
-        // Initialize window pointers and maximum length
-        int left_pointer = 0;
-        int max_substring_length = 0;
-
-        // Handle empty string case
-        if (s.empty()) {
-            return 0;
-        }
-
         // Iterate through the string with right pointer
-        for (int right_pointer = 0; right_pointer < s.length(); right_pointer++) {
+        for (int right_pointer = 0; right_pointer < string_length; right_pointer++) {
             // Get the current character
             char current_char = s[right_pointer];
 
-            // Check if the character is already in the window
-            bool is_char_in_map = character_index_map.count(current_char) > 0;
-            bool is_char_in_window = is_char_in_map && character_index_map[current_char] >= left_pointer;
+            // Check if the character is in the map and within the current window
+            unordered_map<char, int>::iterator map_iterator = character_index_map.find(current_char);
+            bool is_char_in_window = map_iterator != character_index_map.end() && 
+                                    map_iterator->second >= left_pointer;
 
             // If character is a duplicate in the current window, move left pointer
             if (is_char_in_window) {
-                int last_seen_index = character_index_map[current_char];
+                int last_seen_index = map_iterator->second;
                 left_pointer = last_seen_index + 1;
             }
 
             // Update the hashmap with the current character's index
             character_index_map[current_char] = right_pointer;
 
-            // Calculate current window size
-            int current_window_size = right_pointer - left_pointer + 1;
+            // Update max length
+            int current_length = right_pointer - left_pointer + 1;
+            max價_length = max(max_length, current_length);
 
-            // Update maximum length if current window is larger
-            max_substring_length = max(max_substring_length, current_window_size);
+            // Debug print
+            // cout << "Right: " << right_pointer << ", Char: " << current_char
+            //      << ", Left: " << left_pointer << ", Current Length: " << current_length
+            //      << ", Max Length: " << max_length << endl;
         }
 
-        // Return the length of the longest substring found
-        return max_substring_length;
+        return max_length;
 
         /**********************/
         /* END YOUR CODE HERE */
         /**********************/
     }
+
 };
 
 int main() {

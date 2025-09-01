@@ -24,36 +24,45 @@ public:
         /* BEGIN YOUR CODE HERE */
         /************************/
 
-        // Handle special case: x = 0
+        // Step 1: Handle special case where x is 0
         if (x == 0) {
             return 0;
         }
 
-        // Track sign and initialize reversed number
-        bool is_negative = x < 0;
+        // Step 2: Determine if x is negative and initialize variables
+        bool is_negative;
+        if (x < 0) {
+            is_negative = true;
+        } else {
+            is_negative = false;
+        }
         int remaining_number = x;
         int reversed_number = 0;
 
-        // Process digits
+        // Step 3: Process each digit in the loop
         while (remaining_number != 0) {
-            // Extract the last digit
+            // Step 3.1: Extract the last digit
             int current_digit = remaining_number % 10;
             remaining_number /= 10;
 
-            // Convert digit to positive using simple arithmetic
-            int positive_digit = is_negative ? -current_digit : current_digit;
+            // Step 3.2: Convert digit to positive using simple arithmetic
+            int positive_digit;
+            if (is_negative) {
+                positive_digit = -current_digit;
+            } else {
+                positive_digit = current_digit;
+            }
 
-            // Check for overflow before adding digit
-            if (reversed_number > INT_MAX / 10 || 
-                (reversed_number == INT_MAX / 10 && positive_digit > INT_MAX % 10)) {
+            // Step 3.3: Check for overflow before adding digit
+            if (reversed_number > INT_MAX / 10) {
                 return 0; // Overflow
-            }
-            // Special case: INT_MIN when reversed equals INT_MAX
-            if (reversed_number == INT_MAX / 10 && positive_digit == INT_MAX % 10 && is_negative) {
-                return 0; // Would become INT_MIN, which is valid, but check for safety
+            } else if (reversed_number == INT_MAX / 10) {
+                if (positive_digit > INT_MAX % 10) {
+                    return 0; // Overflow
+                }
             }
 
-            // Build reversed number
+            // Step 3.4: Build the reversed number
             reversed_number = reversed_number * 10 + positive_digit;
 
             // Debug print (commented out)
@@ -61,8 +70,12 @@ public:
             //      << ", Reversed: " << reversed_number << ", Remaining: " << remaining_number << endl;
         }
 
-        // Apply sign to final result
-        return is_negative ? -reversed_number : reversed_number;
+        // Step 4: Apply the sign to the final result
+        if (is_negative) {
+            return -reversed_number;
+        } else {
+            return reversed_number;
+        }
 
         /**********************/
         /* END YOUR CODE HERE */

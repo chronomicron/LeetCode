@@ -6,10 +6,11 @@
 //   - 1 <= s.length <= 1000
 //   - s consists of only digits and lowercase English letters
 // Algorithmic Pattern: Two Pointers
-//   - The solution will likely use the expand-around-center approach, where two
-//     pointers expand around each character or between characters to find the
-//     longest palindrome. This achieves O(n²) time and O(1) space, making it
-//     intuitive and suitable for debugging.
+//   - This solution uses the traditional Two Pointers expand-around-center approach,
+//     where two pointers (left and right) expand around each character (for odd-length
+//     palindromes) or between characters (for even-length palindromes) to find the
+//     longest palindrome. This achieves O(n²) time and O(1) space, with clear logic
+//     for debugging.
 
 #include <string>
 #include <iostream>
@@ -23,70 +24,72 @@ public:
         /* BEGIN YOUR CODE HERE */
         /************************/
 
-        // Get string length
+        // Step 1: Get the length of the input string
         int string_length = s.length();
+
+        // Step 2: Handle base cases: if string is empty, return empty string
         if (string_length == 0) {
             return "";
         }
 
-        // Variables to track the longest palindrome
-        int max_palindrome_start = 0;
-        int max_palindrome_length = 1; // Single character is a palindrome
+        // Step 3: Initialize variables to track the longest palindrome
+        int max_palindrome_start = 0; // Starting index of the longest palindrome
+        int max_palindrome_length = 1; // Length of the longest palindrome (minimum 1 for single character)
 
-        // Iterate through each position as a potential center
-        for (int index = 0; index < string_length; index++) {
-            // Check odd-length palindrome (center at index)
-            int left_pointer = index;
-            int right_pointer = index;
-            int current_palindrome_length = 1;
+        // Step 4: Iterate through each position in the string as a potential center
+        for (int center_index = 0; center_index < string_length; center_index++) {
+            // Step 4.1: Check odd-length palindrome centered at center_index
+            int left_pointer = center_index;
+            int right_pointer = center_index;
+            int current_length = 1; // Single character is always a palindrome
 
-            // Expand around center while within bounds and characters match
+            // Step 4.2: Expand around the center while characters match and within bounds
             while (left_pointer - 1 >= 0 && right_pointer + 1 < string_length &&
                    s[left_pointer - 1] == s[right_pointer + 1]) {
                 left_pointer--;
                 right_pointer++;
-                current_palindrome_length += 2;
-                // Debug print (commented out)
-                // cout << "Odd: index=" << index << ", left=" << left_pointer
-                //      << ", right=" << right_pointer << ", len=" << current_palindrome_length << endl;
+                current_length += 2;
+
+                // Debug print for odd-length expansion
+                // cout << "Odd: center=" << center_index << ", left=" << left_pointer
+                //      << ", right=" << right_pointer << ", len=" << current_length << endl;
             }
 
-            // Update longest palindrome if current is longer
-            if (current_palindrome_length > max_palindrome_length) {
+            // Step 4.3: Update longest palindrome if current is longer
+            if (current_length > max_palindrome_length) {
                 max_palindrome_start = left_pointer;
-                max_palindrome_length = current_palindrome_length;
+                max_palindrome_length = current_length;
             }
 
-            // Check even-length palindrome (center between index and index+1)
-            if (index + 1 < string_length) {
-                left_pointer = index;
-                right_pointer = index + 1;
-                current_palindrome_length = (s[left_pointer] == s[right_pointer]) ? 2 : 0;
+            // Step 4.4: Check even-length palindrome centered between center_index and center_index + 1
+            if (center_index + 1 < string_length && s[center_index] == s[center_index + 1]) {
+                left_pointer = center_index;
+                right_pointer = center_index + 1;
+                current_length = 2; // Two adjacent characters form a palindrome
 
-                // Expand only if initial characters match
-                if (current_palindrome_length == 2) {
-                    while (left_pointer - 1 >= 0 && right_pointer + 1 < string_length &&
-                           s[left_pointer - 1] == s[right_pointer + 1]) {
-                        left_pointer--;
-                        right_pointer++;
-                        current_palindrome_length += 2;
-                        // Debug print (commented out)
-                        // cout << "Even: index=" << index << ", left=" << left_pointer
-                        //      << ", right=" << right_pointer << ", len=" << current_palindrome_length << endl;
-                    }
+                // Step 4.5: Expand around the center while characters match and within bounds
+                while (left_pointer - 1 >= 0 && right_pointer + 1 < string_length &&
+                       s[left_pointer - 1] == s[right_pointer + 1]) {
+                    left_pointer--;
+                    right_pointer++;
+                    current_length += 2;
 
-                    // Update longest palindrome if current is longer
-                    if (current_palindrome_length > max_palindrome_length) {
-                        max_palindrome_start = left_pointer;
-                        max_palindrome_length = current_palindrome_length;
-                    }
+                    // Debug print for even-length expansion
+                    // cout << "Even: center=" << center_index << ", left=" << left_pointer
+                    //      << ", right=" << right_pointer << ", len=" << current_length << endl;
+                }
+
+                // Step 4.6: Update longest palindrome if current is longer
+                if (current_length > max_palindrome_length) {
+                    max_palindrome_start = left_pointer;
+                    max_palindrome_length = current_length;
                 }
             }
         }
 
-        // Extract the longest palindrome substring
-        string longest_palindrome_result = s.substr(max_palindrome_start, max_palindrome_length);
-        return longest_palindrome_result;
+        // Step 5: Extract and return the longest palindrome substring
+        string longest_palindrome_substring = s.substr(max_palindrome_start, max_palindrome_length);
+        return longest_palindrome_substring;
 
         /**********************/
         /* END YOUR CODE HERE */

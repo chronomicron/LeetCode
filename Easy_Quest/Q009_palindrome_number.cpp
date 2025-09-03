@@ -23,43 +23,53 @@ public:
         /* BEGIN YOUR CODE HERE */
         /************************/
 
-        // Handle negative numbers (not palindromes)
+        // Step 1: Handle negative numbers immediately, as they cannot be palindromes
+        //         (e.g., -121 reversed would be 121-, which doesn't match)
         if (x < 0) {
             return false;
         }
 
-        // Handle zero
+        // Step 2: Handle the special case where x is 0, which is a palindrome
         if (x == 0) {
             return true;
         }
 
-        // Initialize variables for reversal
-        int original_number = x;
-        int reversed_number = 0;
-        int remaining_number = x;
+        // Step 3: Initialize variables for reversal process
+        int original_number = x; // Store the original number for later comparison
+        int reversed_number = 0; // To build the reversed version of x
+        int remaining_number = x; // Temporary copy to extract digits from
 
-        // Reverse the number
+        // Step 4: Reverse the number digit by digit
         while (remaining_number > 0) {
-            // Extract the last digit
+            // Step 4.1: Extract the last digit using modulo
             int current_digit = remaining_number % 10;
-            remaining_number /= 10;
 
-            // Check for overflow before adding digit
-            if (reversed_number > INT_MAX / 10 || 
-                (reversed_number == INT_MAX / 10 && current_digit > INT_MAX % 10)) {
-                return false; // Overflow, not a valid palindrome
+            // Step 4.2: Remove the last digit from remaining_number
+            remaining_number = remaining_number / 10;
+
+            // Step 4.3: Check for potential overflow before adding the digit to reversed_number
+            if (reversed_number > INT_MAX / 10) {
+                return false; // Overflow would occur, so not a valid palindrome
+            } else if (reversed_number == INT_MAX / 10) {
+                if (current_digit > INT_MAX % 10) {
+                    return false; // Overflow would occur
+                }
             }
 
-            // Build reversed number
+            // Step 4.4: Add the digit to the reversed number
             reversed_number = reversed_number * 10 + current_digit;
 
-            // Debug print
-            // cout << "Digit: " << current_digit << ", Reversed: " << reversed_number
-            //      << ", Remaining: " << remaining_number << endl;
+            // Debug print (commented out)
+            // cout << "Current Digit: " << current_digit << ", Reversed Number: " << reversed_number
+            //      << ", Remaining Number: " << remaining_number << endl;
         }
 
-        // Check if the number is a palindrome
-        return reversed_number == original_number;
+        // Step 5: Compare the reversed number with the original number
+        if (reversed_number == original_number) {
+            return true;
+        } else {
+            return false;
+        }
 
         /**********************/
         /* END YOUR CODE HERE */

@@ -7,9 +7,10 @@
 //   - 0 <= strs[i].length <= 200
 //   - strs[i] contains only lowercase English letters if non-empty
 // Algorithmic Pattern: String Comparison
-//   - Use the first string as a reference, compare characters position by position across
-//     all strings, and stop at the first mismatch or end of a string. Achieves O(S) time
-//     (S = total characters in all strings) and O(1) space (excluding output).
+//   - Find the shortest non-empty string in the array, use it as the reference, and compare
+//     its characters position by position across all strings. Stop at the first mismatch or
+//     end of a string. Achieves O(S) time (S = total characters in all strings) and O(1)
+//     space (excluding output).
 
 #include <vector>
 #include <string>
@@ -29,31 +30,47 @@ public:
             return "";
         }
 
-        // Step 2: Handle edge case: if any string is empty, return empty string
-        for (int i = 0; i < strs.size(); i++) {
-            if (strs[i].empty()) {
-                return "";
+        // Step 2: Find the shortest non-empty string and check for empty strings
+        int shortest_length = 200; // Max length per constraints
+        int shortest_index = 0; // Index of shortest non-empty string
+        bool found_empty = false;
+
+        for (int string_index = 0; string_index < strs.size(); string_index++) {
+            // Step 2.1: Check if the current string is empty
+            if (strs[string_index].empty()) {
+                found_empty = true;
+                break;
+            }
+
+            // Step 2.2: Update shortest length and index if current string is shorter
+            int current_length = strs[string_index].length();
+            if (current_length < shortest_length) {
+                shortest_length = current_length;
+                shortest_index = string_index;
             }
         }
 
-        // Step 3: Use the first string as the reference for comparison
-        string reference_string = strs[0];
-        int prefix_length = reference_string.length();
+        // Step 3: If an empty string was found, return empty string
+        if (found_empty) {
+            return "";
+        }
 
-        // Step 4: Iterate through characters of the reference string
+        // Step 4: Use the shortest string as the reference
+        string reference_string = strs[shortest_index];
+        int prefix_length = shortest_length;
+
+        // Step 5: Iterate through characters of the reference string
         for (int char_index = 0; char_index < prefix_length; char_index++) {
             char current_char = reference_string[char_index];
 
-            // Step 4.1: Compare the current character with the same position in all other strings
-            for (int string_index = 1; string_index < strs.size(); string_index++) {
-                // Step 4.1.1: Check if the current string is too short
-                if (char_index >= strs[string_index].length()) {
-                    // If we reach the end of any string, the prefix ends here
-                    prefix_length = char_index;
-                    return reference_string.substr(0, prefix_length);
+            // Step 5.1: Compare the current character with the same position in all other strings
+            for (int string_index = 0; string_index < strs.size(); string_index++) {
+                // Skip the reference string itself
+                if (string_index == shortest_index) {
+                    continue;
                 }
 
-                // Step 4.1.2: Check if characters match
+                // Step 5.1.1: Check if characters match
                 if (strs[string_index][char_index] != current_char) {
                     // Mismatch found, the prefix ends here
                     prefix_length = char_index;
@@ -66,7 +83,7 @@ public:
             //      << ", Prefix Length: " << prefix_length << endl;
         }
 
-        // Step 5: If no mismatch is found, return the entire reference string up to prefix_length
+        // Step 6: If no mismatch is found, return the entire reference string up to prefix_length
         return reference_string.substr(0, prefix_length);
 
         /**********************/
@@ -112,6 +129,11 @@ int main() {
     vector<string> input_7 = {"a", "ab", "abc"};
     cout << "Test Case 7: strs = [\"a\",\"ab\",\"abc\"] -> Prefix: ";
     cout << solution.longestCommonPrefix(input_7) << endl;
+
+    // Test Case 8: Shortest string first (strs = ["ab","abcd","abcde"])
+    vector<string> input_8 = {"ab", "abcd", "abcde"};
+    cout << "Test Case 8: strs = [\"ab\",\"abcd\",\"abcde\"] -> Prefix: ";
+    cout << solution.longestCommonPrefix(input_8) << endl;
 
     return 0;
 }

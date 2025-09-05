@@ -160,5 +160,11 @@ int main() {
     printResult(solution.threeSum(input_7));
     cout << endl;
 
+    // Test Case 8: All negative numbers (nums = [-4,-3,-2,-1,-1])
+    vector<int> input_8 = {-4, -3, -2, -1, -1};
+    cout << "Test Case 8: nums = [-4,-3,-2,-1,-1] -> Triplets: ";
+    printResult(solution.threeSum(input_8));
+    cout << endl;
+
     return 0;
 }

@@ -21,3 +21,10 @@ Hard_Quest/*.exe
 !Hard_Quest/*.cpp  # Keep source files
 !Hard_Quest/*.h    # Keep header files
 
+PortfolioCoursesOnline/*
+!PortfolioCoursesOnline/*.c
+!PortfolioCoursesOnline/*.cpp
+!PortfolioCoursesOnline/*.h
+
+
+

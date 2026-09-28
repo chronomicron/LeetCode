@@ -51,7 +51,7 @@ int *runningSum(int *nums, int numsSize, int *returnSize)
 
     int sum = 0;
     
-    int *result = (int*)malloc(numsSize * sizeof(int));
+    int *result = malloc(numsSize * sizeof(int));
     if (result == NULL) {
         return NULL; // Memory allocation failed
     }

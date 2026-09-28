@@ -8,6 +8,8 @@ Easy_Quest/*.exe
 Med_Quest/*.exe
 Hard_Quest/*.exe
 
+/build/
+
 # reinstate source files
 !Easy_Quest/*.c  # Keep source files
 !Easy_Quest/*.cpp  # Keep source files
